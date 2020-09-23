@@ -1,0 +1,29 @@
+/* 
+ * Dissociates the $ alias from the previously loaded jQuery object, aliasing instead as 'jQueryEngr'.
+ * 
+ * See also jquery-detect-existing.js
+ * See also http://api.jquery.com/jQuery.noConflict/ 
+ */
+
+if (foundNonStandardJQuery) {
+	cvLogger.warn('Using non-standard jQuery instance.  Perhaps you should instead call \n\tY.use(\'jquery-noconflict\', function() { ... }); \nto use the standard, supported instance of jQuery?');
+	if (nonStandardJQueryVersion !== jQuery.fn.jquery) {
+		cvLogger.warn('Standard, supported jQuery version is ' + jQuery.fn.jquery + '.  Using version ' + nonStandardJQueryVersion + ' instead.  Proceed at your own risk.');
+	}
+}
+else {
+	cvLogger.debug('Using standard, supported jQuery version: ' + jQuery.fn.jquery);
+}
+
+// call no conflict such that the '$' global convenience variable is released.
+$.noConflict(
+			/* 
+			 * bug 60995 -- also release the 'jQuery' alias if 
+			 * services loaded their own jQuery instance 
+			 */
+			foundNonStandardJQuery  
+		);
+
+// the jQuery global variable should still be available at this point, 
+// whether foundNonStandardJQuery is true or false 
+jQuery.noop();

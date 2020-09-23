@@ -1,0 +1,60 @@
+/* Compressed by the perl version of jsmin. */
+/* JavaScript::Minifier 0.02 */
+
+var dl_levelInfos=new Array();var dl_obs_comp;var dl_other_amt_obs_comp;function dl_observeLevelChange(_observer)
+{if(dl_obs_comp)
+observe_component(dl_obs_comp,_observer)
+dl_checkInitialLevel();}
+function dl_observeOtherAmountChange(_observer)
+{if(dl_other_amt_obs_comp)
+observe_component(dl_other_amt_obs_comp,_observer);}
+function dl_LevelInfo(_levelId,_radioId,_contentHolder)
+{this.levelId=_levelId;this.radioId=_radioId;this.contentHolder=_contentHolder;var radio=document.getElementById(_radioId);subclass(this,new FCDynamicMessageInfo(radio,_contentHolder));}
+function dl_addLevelInfo(_message,_isCompact)
+{dl_levelInfos.push(_message);var radio=document.getElementById(_message.radioId);if(radio){if(!dl_obs_comp){dl_obs_comp=new ObservableRadioComponent(radio.name);}
+if(_isCompact){Utils.addEvent(radio,'focus',dl_levelFocused);Utils.addEvent(radio,'click',dl_levelFocused);Utils.addEvent(radio,'blur',dl_levelBlur);}
+Utils.addEvent(radio,'click',dl_levelSelected);Utils.addEvent(radio,'keypress',dl_levelSelected);}}
+function dl_OtherAmountLevelInfo(_levelId,_textId)
+{this.levelId=_levelId;this.textId=_textId;}
+function dl_addOtherAmountLevelInfo(_otherAmountLevelInfo)
+{var text=document.getElementById(_otherAmountLevelInfo.textId);if(text&&!dl_other_amt_obs_comp)
+dl_other_amt_obs_comp=new ObservableComponent(text.name,'');}
+function dl_findLabel(_el)
+{var rc;var labels=document.getElementsByTagName('LABEL');for(var b=0;(!rc&&(b<labels.length));b++){if(labels[b].getAttribute('for')==_el.id)
+rc=labels[b];}
+return rc;}
+function dl_setAccessibleMessages(_warnLabel)
+{for(var m=0;(m<dl_levelInfos.length);m++){var lvlInfo=dl_levelInfos[m];var radio=document.getElementById(lvlInfo.radioId);label=dl_findLabel(radio);if(label){var img=fc_makeSpacerImg(1);img.alt=fc_getFieldLabel(radio)+' '
++fc_getElementText(lvlInfo.contentHolder)+' '
++fc_getFieldInfoText(radio)+'. '+_warnLabel;label.appendChild(img);}}}
+function dl_showLevelMessage(_el)
+{var srcdiv=dl_findLevelAsk(_el);fc_showOtherMessage(_el,srcdiv,'DonLevelAskMsg');}
+function dl_levelFocused(_evt)
+{_evt=_evt?_evt:event;var el=_evt.target?_evt.target:_evt.srcElement;dl_showLevelMessage(el);}
+function dl_levelSelected(_evt)
+{_evt=_evt?_evt:event;var el=_evt.target?_evt.target:_evt.srcElement;if(el&&el.checked&&_evt.type)
+{fire_obs_comp_event(el.name,el);}}
+function dl_levelBlur(_evt)
+{_evt=_evt?_evt:event;var el=_evt.target?_evt.target:_evt.srcElement;if(el&&el.checked)
+dl_showLevelMessage(el);else
+fc_showOtherMessage(el,null,'DonLevelAskMsg');}
+function dl_checkInitialLevel()
+{for(var m=0;(m<dl_levelInfos.length);m++){var radio=document.getElementById(dl_levelInfos[m].radioId);if(radio&&radio.checked){radio.click();var event=new Object();event.target=radio;dl_levelSelected(event);dl_levelFocused(event);break;}}}
+function dl_initLevelInfo()
+{var isCompact=false;var inputs=document.getElementsByTagName('INPUT');for(var i=0;(i<inputs.length);i++){var input=inputs[i];if(inputs[i]&&(inputs[i].type=='radio')&&isOfClass(inputs[i],'DonationLevelRadio')){var row=fc_getFormRow(inputs[i]);if(row){var delFlag=fc_getPeerByClass(row,'DonLevelDeleteThisRow');if(delFlag){if(row&&row.parentNode){row.parentNode.removeChild(row);i-=1;}}
+else{row.style.display='';var compactSubmitEl=fc_getChildByClass(row,'DonLevelSubmit');if(compactSubmitEl){compactSubmitEl.value='true';isCompact=true;}
+var askHolder=dl_findLevelAsk(inputs[i]);var askHolderId=askHolder?askHolder.id:'';var levInfo=new dl_LevelInfo(inputs[i].value,inputs[i].id,askHolder);dl_addLevelInfo(levInfo,isCompact);}}}
+else if(input&&input.type=='text'&&isOfClass(input,'DonationLevelOtherAmount')){var levInfo=new dl_OtherAmountLevelInfo(input.value,input.id);dl_addOtherAmountLevelInfo(levInfo);}}
+return isCompact;}
+function dl_findLevelAsk(_radio)
+{var rc;var cell=getAncestor('TD',_radio);if(cell){var divs=cell.getElementsByTagName('DIV');for(var d=0;(!rc&&(d<divs.length));d++){if(isOfClass(divs[d],'DonationLevelAsk'))
+rc=divs[d];}}
+return rc;}
+function dl_onload(_fn)
+{if(dl_init_begun)
+return false;dl_init_callback=_fn;return true;}
+var dl_init_begun=false;var dl_init_callback;function dl_init()
+{dl_init_begun=true;var isCompact=dl_initLevelInfo();dl_setAccessibleMessages('[[M0:global:warn_label]]');if(isCompact)
+fc_setDimensions(dl_levelInfos,'DonLevelAskMsg');dl_checkInitialLevel();if(dl_init_callback)
+dl_init_callback();}
+Utils.addEvent(window,'load',dl_init);

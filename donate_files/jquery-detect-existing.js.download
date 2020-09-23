@@ -1,0 +1,12 @@
+/*
+ * Sets a global scope boolean variable indicating whether jQuery is currently loaded under the standard jQuery alias. 
+ * 
+ * See also jquery-noconflict.js
+ */
+
+// check to see if services or a client has already loaded an instance of jQuery
+var foundNonStandardJQuery = (typeof jQuery != 'undefined') && (typeof jQuery.fn != 'undefined')
+if (foundNonStandardJQuery) {
+	var nonStandardJQueryVersion = jQuery.fn.jquery;
+	cvLogger.info('YUI dependency management discovered a previously loaded instance of the jQuery library.');
+}

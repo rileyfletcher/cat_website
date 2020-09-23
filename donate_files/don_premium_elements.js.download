@@ -1,0 +1,125 @@
+/* Compressed by the perl version of jsmin. */
+/* JavaScript::Minifier 0.02 */
+
+var DON_PS_PREM_SELECT_LIST_CLASS='PremiumSelectorSelect';var DON_PS_PREM_RADIO_BUTTON_CLASS='PremiumSelectorRadio';var DON_PS_PREM_NONE_AVAIL_ROW_ID='don_prem_none_avail_row';var DON_PS_PREM_AVAIL_FOR_USER_SPECIFIED_AMT_ROW_ID='don_prem_avail_for_user_specified_amt_row';var DON_PS_NO_SELECTION_PREM_PRODUCT_ID=-1;var DON_PS_PREM_AVAIL_FOR_USER_SPECIFIED_AMT_PRODUCT_ID=-2;var don_ps_premiumInfos=new Array();var don_ps_radio_buttons;var don_ps_searched_for_radios=false;var don_ps_select_list;var don_ps_select_list_clone;var don_ps_searched_for_select=false;var don_premium_map=new Object();var don_ps_value_map=new Object();var don_ps_level_id=0;var don_ps_user_specified_level_id=0;var don_ps_user_specified_value=0;function DonLevelPremiums(_levelId,_levelValue)
+{this.levelId=_levelId;this.levelValue=_levelValue;this.premiumIDs=new Array();}
+DonLevelPremiums.prototype.addPremium=function(_premId)
+{this.premiumIDs[_premId]=_premId;}
+DonLevelPremiums.prototype.hasPremium=function(_premId)
+{return this.premiumIDs[_premId]?true:false;}
+function don_ps_map_premium_to_level(_levelId,_levelValue,_premId)
+{var lvlInfo=don_premium_map[_levelId];if(!lvlInfo){var levelValue=parseInt(_levelValue);lvlInfo=new DonLevelPremiums(_levelId,_levelValue);don_premium_map[_levelId]=lvlInfo;don_ps_value_map[levelValue]=lvlInfo;}
+lvlInfo.addPremium(_premId);}
+function don_ps_getHighestDonLevelPremiums(_userSpecifiedValue)
+{var result=null;var resultValue=0;for(var value in don_ps_value_map){var intValue=parseInt(value);if(intValue>resultValue&&intValue<=_userSpecifiedValue){result=don_ps_value_map[value];resultValue=intValue;}}
+return result;}
+function don_ps_set_selected_level_id(_levelId)
+{don_ps_level_id=_levelId;}
+function don_ps_set_user_specified_level(_levelId)
+{don_ps_user_specified_level_id=_levelId;}
+function don_ps_set_user_specified_value(_value)
+{don_ps_user_specified_value=_value;}
+function don_ps_getRadioButtons()
+{if(!don_ps_radio_buttons&&!don_ps_searched_for_radios){don_ps_searched_for_radios=true;var inputs=document.getElementsByTagName('INPUT');don_ps_radio_buttons=filterByClass(inputs,DON_PS_PREM_RADIO_BUTTON_CLASS);}
+return don_ps_radio_buttons;}
+function don_ps_getSelectList()
+{if(!don_ps_select_list&&!don_ps_searched_for_select){don_ps_searched_for_select=true;var sels=document.getElementsByTagName('SELECT');for(var i=0;(!don_ps_select_list&&(i<sels.length));i++)
+if(isOfClass(sels[i],DON_PS_PREM_SELECT_LIST_CLASS))
+don_ps_select_list=sels[i];if(don_ps_select_list)
+don_ps_select_list_clone=don_ps_select_list.cloneNode(true);}
+return don_ps_select_list;}
+function don_ps_getOrigSelectList()
+{if(!don_ps_select_list_clone)
+don_ps_getSelectList();return don_ps_select_list_clone;}
+function don_ps_reset_select_list()
+{var sel=don_ps_getSelectList();var origSel=don_ps_getOrigSelectList();if(sel&&origSel){don_ps_select_list=origSel.cloneNode(true);don_ps_select_list.selectedIndex=sel.selectedIndex;don_ps_select_list.value=sel.value;Utils.addEvent(don_ps_select_list,'change',don_ps_premiumSelected);sel.parentNode.replaceChild(don_ps_select_list,sel);}
+return don_ps_select_list;}
+function don_ps_filter_by_level(_levelId)
+{var map=don_premium_map[_levelId];var sel=don_ps_reset_select_list();if(sel)
+don_ps_filter_select_by_level(map,sel,_levelId);else{var radios=don_ps_getRadioButtons();if(radios&&radios.length)
+don_ps_filter_radios_by_level(map,radios,_levelId);}}
+function don_ps_filter_by_string_value(_sAmount)
+{var amount=parseCurrency(_sAmount);if(isNaN(amount))amount=0;don_ps_filter_by_value(amount);}
+function don_ps_filter_by_value(_amount)
+{var donLevelPremiums=don_ps_getHighestDonLevelPremiums(_amount);if(donLevelPremiums){var levelId=donLevelPremiums.levelId;don_ps_filter_by_level(levelId);}
+else{don_ps_filter_by_level(don_ps_user_specified_level_id);}}
+function don_ps_filter_radios_by_level(_map,_radios,_levelId)
+{var firstVisible;var lastVisible;var numVis=0;for(var r=0;(r<_radios.length);r++){var id=don_ps_get_premium_id(_radios[r].value);if(don_ps_hide_or_show_premium_radio(_map,_radios[r],id,_levelId,numVis)){numVis++;lastVisible=_radios[r];if(!firstVisible)
+firstVisible=_radios[r];}}
+var unavail=document.getElementById(DON_PS_PREM_NONE_AVAIL_ROW_ID);var availForAmt=document.getElementById(DON_PS_PREM_AVAIL_FOR_USER_SPECIFIED_AMT_ROW_ID);var userSpecifiedSelected=_levelId==don_ps_user_specified_level_id;if((numVis==1)&&firstVisible&&unavail){if(userSpecifiedSelected){hide_element(unavail);show_element(availForAmt);}
+else{hide_element(availForAmt);show_element(unavail);}
+hide_element(fc_getFormRow(firstVisible));firstVisible.checked=false;}
+else{hide_element(unavail);hide_element(availForAmt);if(lastVisible){var row=fc_getFormRow(lastVisible);row.className=(firstVisible==lastVisible)?'FormRow':'FormRowLast';}}}
+function don_ps_hide_or_show_premium_radio(_map,_element,_id,_levelId,_numVisible)
+{var showIt=((_id<=0)||(_map&&_map.hasPremium(_id)));if(showIt){var row=fc_getFormRow(_element);show_element(row);row.className=_numVisible?'FormRowMiddle':'FormRowFirst';}
+else{hide_element(fc_getFormRow(_element));if(_element.checked)
+_element.checked=false;}
+return showIt;}
+function don_ps_filter_select_by_level(_map,_select,_levelId)
+{for(var op=(_select.options.length-1);(op>=0);op--){var opt=_select.options[op];var id=don_ps_get_premium_id(opt.value);don_ps_hide_or_show_premium_option(_map,opt,id,_levelId);if(op>_select.options.length)
+op=_select.options.length;}
+if(_select.selectedIndex>0){var opt=_select.options[_select.selectedIndex];if(opt.style.display=='none'){_select.options[0].selected=true;_select.selectedIndex=0;_select.value=_select.options[0].value;}}
+don_ps_simulateSelection(_select);}
+function don_ps_hide_or_show_premium_option(_map,_element,_id,_levelId)
+{if(_id>0){if((!_map||!_map.hasPremium(_id))){removeOptionElement(_element);}}
+else{if(_id==DON_PS_NO_SELECTION_PREM_PRODUCT_ID&&_levelId==don_ps_user_specified_level_id)
+removeOptionElement(_element);else if(_id==DON_PS_PREM_AVAIL_FOR_USER_SPECIFIED_AMT_PRODUCT_ID&&_levelId!=don_ps_user_specified_level_id)
+removeOptionElement(_element);}}
+function removeOptionElement(_element)
+{if(_element.tagName=='OPTION'){if(_element.parentNode.tagName=='OPTGROUP')
+_element.parentNode.parentNode.removeChild(_element.parentNode);else
+_element.parentNode.removeChild(_element);}}
+function don_ps_PremiumInfo(_select,_contentHolder)
+{subclass(this,new FCDynamicMessageInfo(_select,_contentHolder));}
+function don_ps_addPremiumInfo(_pi)
+{don_ps_premiumInfos.push(_pi);}
+function don_ps_findPremiumInfoDiv(select,premiumID)
+{var divID="donation_premium_info."+premiumID;var api=don_ps_findPremiumInfoDivs(select);for(var i=0;i<api.length;i++){if(api[i].id==divID)
+return api[i];}
+return null;}
+function don_ps_findPremiumInfoDivs(select)
+{var premiumInfos=new Array();var cell=getAncestor('TD',select);if(cell){var divs=cell.getElementsByTagName('DIV');for(var i=0;i<divs.length;i++){var div=divs[i];if(isOfClass(div,'DonationPremiumInfo')){premiumInfos.push(div);}}}
+return premiumInfos;}
+function don_ps_get_premium_id(_value)
+{var idxDot=_value.indexOf('.');return(idxDot!=-1)?_value.substring(0,idxDot):_value;}
+function don_ps_showPremiumMessage(el)
+{var div;var value=get_input_value(el);if(value){var id=don_ps_get_premium_id(value);div=don_ps_findPremiumInfoDiv(el,id);}
+fc_showOtherMessage(el,div,'PremiumInfoBlock');}
+function don_ps_configSelected(_evt)
+{_evt=_evt?_evt:event;var el=_evt.target?_evt.target:_evt.srcElement;var radio=fc_getPeerByClass(el,DON_PS_PREM_RADIO_BUTTON_CLASS);if(radio)
+radio.checked=true;}
+function don_ps_premiumSelected(_evt)
+{_evt=_evt?_evt:event;var el=_evt.target?_evt.target:_evt.srcElement;don_ps_showPremiumMessage(el);}
+function don_ps_initPremiumInfo()
+{var select=don_ps_getSelectList();if(select){hide_element(DON_PS_PREM_NONE_AVAIL_ROW_ID);hide_element(DON_PS_PREM_AVAIL_FOR_USER_SPECIFIED_AMT_ROW_ID);var premiumInfos=don_ps_findPremiumInfoDivs(select);for(var j=0;j<premiumInfos.length;j++){var premiumInfo=premiumInfos[j];var premiumID=premiumInfo?premiumInfo.id:'';don_ps_addPremiumInfo(new don_ps_PremiumInfo(select,premiumInfo));}
+var row=fc_getFormRow(select);if(row){show_element(row);var submit=fc_getChildByClass(row,'DonPremiumSubmit');if(submit)
+submit.value='true';}
+Utils.addEvent(select,'change',don_ps_premiumSelected);}
+var radios=don_ps_getRadioButtons();for(var r=0;(radios&&(r<radios.length));r++){var cfgList=fc_getPeerByClass(radios[r],'PremiumSelectorConfigSelect');if(cfgList&&(cfgList.tagName=='SELECT')){Utils.addEvent(cfgList,'change',don_ps_configSelected);}}
+var spans=document.getElementsByTagName('SPAN');for(var i=0;i<spans.length;i++){if(isOfClass(spans[i],'DonPremiumDeleteThisRow'))
+hide_element(fc_getFormRow(spans[i]));}}
+function don_ps_checkInitial()
+{var select=don_ps_getSelectList();if(select)
+don_ps_simulateSelection(select);}
+function don_ps_simulateSelection(_select)
+{var event=new Object();event.target=_select;don_ps_premiumSelected(event);}
+var timerID=0;function don_ps_queue_filter_by_string_value(_component)
+{var sAmount=_component.get();var code="don_ps_filter_by_string_value ('"+sAmount+"')";timerID=setTimeout(code,1000);}
+function don_ps_dequeue_filter_by_value()
+{if(timerID!=0)clearTimeout(timerID);timerID=0;}
+function don_ps_immediate_filter_by_value(_component)
+{var sAmount=_component.get();don_ps_filter_by_string_value(sAmount);}
+function don_ps_LevelChangeObserver()
+{this.observe=function(_event)
+{if(_event.component){don_ps_dequeue_filter_by_value();var levelId=_event.component.get();don_ps_filter_by_level(levelId);if(levelId==don_ps_user_specified_level_id){var amountComp=get_observable_component(_event.component.prefix+levelId+"amount");if(amountComp){don_ps_immediate_filter_by_value(amountComp);}}}}}
+function don_ps_OtherAmountChangeObserver()
+{this.observe=function(_event)
+{var component=_event.component;if(component){var evt=_event.evt;if(evt){var isKeyupEvent=evt.type=="keyup";var isClickEvent=evt.type=="click";var isFocusEvent=evt.type=="focus";if(don_ps_getSelectList()){if(isKeyupEvent||isClickEvent||isFocusEvent){don_ps_immediate_filter_by_value(component);}}
+else{don_ps_dequeue_filter_by_value();if(isKeyupEvent){don_ps_queue_filter_by_string_value(component);}
+else{don_ps_immediate_filter_by_value(component);}}}}}}
+function don_ps_init()
+{don_ps_initPremiumInfo();fc_setDimensions(don_ps_premiumInfos,'PremiumInfoBlock');dl_observeLevelChange(new don_ps_LevelChangeObserver());dl_observeOtherAmountChange(new don_ps_OtherAmountChangeObserver());if(don_ps_level_id>0){if(don_ps_level_id!=don_ps_user_specified_level_id)
+don_ps_filter_by_level(don_ps_level_id);else{don_ps_dequeue_filter_by_value();don_ps_filter_by_value(don_ps_user_specified_value);}}
+don_ps_checkInitial();}
+if(!dl_onload||!dl_onload(don_ps_init))
+Utils.addEvent(window,'load',don_ps_init);

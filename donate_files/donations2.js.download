@@ -1,0 +1,47 @@
+/* Compressed by the perl version of jsmin. */
+/* JavaScript::Minifier 0.02 */
+
+function Address(_street1,_street2,_street3,_county,_city,_state,_zip,postcode,_country)
+{this.street1=_street1;this.street2=_street2;this.street3=_street3;this.county=_county;this.city=_city;this.state=_state;this.zip=_zip;this.postcode=postcode;this.country=_country;}
+function AddressComponents(_street1CompId,_street2CompId,_street3CompId,_countyCompId,_cityCompId,_stateCompId,_zipCompId,_postcodeCompId,_countryCompId)
+{this.street1Comp=get_observable_component(_street1CompId);this.street2Comp=get_observable_component(_street2CompId);this.street3Comp=get_observable_component(_street3CompId);this.countyComp=get_observable_component(_countyCompId);this.cityComp=get_observable_component(_cityCompId);this.stateComp=get_observable_component(_stateCompId);this.zipComp=get_observable_component(_zipCompId);this.postcodeComp=get_observable_component(_postcodeCompId);this.countryComp=get_observable_component(_countryCompId);}
+function DonAddressCopier(_srcAddr,_srcAddrComps,_destAddrComps)
+{this.srcAddr=_srcAddr;this.srcAddrComponents=_srcAddrComps;this.destAddrComponents=_destAddrComps;}
+DonAddressCopier.prototype.observe=function(_event)
+{if(!_event.component||!filter_values_equal(_event.component.get(),true))return;this.copyField(this.srcAddrComponents.street1Comp,this.destAddrComponents.street1Comp,this.srcAddr.street1);this.copyField(this.srcAddrComponents.street2Comp,this.destAddrComponents.street2Comp,this.srcAddr.street2);this.copyField(this.srcAddrComponents.street3Comp,this.destAddrComponents.street3Comp,this.srcAddr.street3);this.copyField(this.srcAddrComponents.countyComp,this.destAddrComponents.countyComp,this.srcAddr.county);this.copyField(this.srcAddrComponents.cityComp,this.destAddrComponents.cityComp,this.srcAddr.city);this.copyField(this.srcAddrComponents.stateComp,this.destAddrComponents.stateComp,this.srcAddr.state);this.copyField(this.srcAddrComponents.zipComp,this.destAddrComponents.zipComp,this.srcAddr.zip);this.copyField(this.srcAddrComponents.postcodeComp,this.destAddrComponents.postcodeComp,this.srcAddr.postcode);this.copyField(this.srcAddrComponents.countryComp,this.destAddrComponents.countryComp,this.srcAddr.country);}
+DonAddressCopier.prototype.copyField=function(_srcComp,_destComp,_srcValue)
+{if(_destComp){var value=_srcComp?_srcComp.get():_srcValue;if(value)
+_destComp.set(value);}}
+function Name(_title,_firstName,_middleName,_lastName,_suffix,_profSuffix)
+{this.title=_title;this.firstName=_firstName;this.middleName=_middleName;this.lastName=_lastName;this.suffix=_suffix;this.profSuffix=_profSuffix;}
+function NameComponents(_titleCompId,_firstNameCompId,_middleNameCompId,_lastNameCompId,_suffixCompId,_profSuffixCompId)
+{this.titleComp=get_observable_component(_titleCompId);this.firstNameComp=get_observable_component(_firstNameCompId);this.middleNameComp=get_observable_component(_middleNameCompId);this.lastNameComp=get_observable_component(_lastNameCompId);this.suffixComp=get_observable_component(_suffixCompId);this.profSuffixComp=get_observable_component(_profSuffixCompId);}
+function DonNameCopier(_srcName,_srcNameComps,_destNameComps)
+{this.srcName=_srcName;this.srcNameComponents=_srcNameComps;this.destNameComponents=_destNameComps;}
+DonNameCopier.prototype.observe=function(_event)
+{if(!_event.component||!filter_values_equal(_event.component.get(),true))return;this.copyField(this.srcNameComponents.titleComp,this.destNameComponents.titleComp,this.srcName.title);this.copyField(this.srcNameComponents.firstNameComp,this.destNameComponents.firstNameComp,this.srcName.firstName);this.copyField(this.srcNameComponents.middleNameComp,this.destNameComponents.middleNameComp,this.srcName.middleName);this.copyField(this.srcNameComponents.lastNameComp,this.destNameComponents.lastNameComp,this.srcName.lastName);this.copyField(this.srcNameComponents.suffixComp,this.destNameComponents.suffixComp,this.srcName.suffix);this.copyField(this.srcNameComponents.profSuffixComp,this.destNameComponents.profSuffixComp,this.srcName.profSuffix);}
+DonNameCopier.prototype.copyField=function(_srcComp,_destComp,_srcValue)
+{if(_destComp){var value=_srcComp?_srcComp.get():_srcValue;if(value)
+_destComp.set(value);}}
+function Email(_email)
+{this.email=_email;}
+function EmailComponents(_emailCompId)
+{this.emailComp=get_observable_component(_emailCompId);}
+function DonEmailCopier(_srcEmail,_srcEmailComps,_destEmailComps)
+{this.srcEmail=_srcEmail;this.srcEmailComponents=_srcEmailComps;this.destEmailComponents=_destEmailComps;}
+DonEmailCopier.prototype.observe=function(_event)
+{if(!_event.component||!filter_values_equal(_event.component.get(),true))return;this.copyField(this.srcEmailComponents.emailComp,this.destEmailComponents.emailComp,this.srcEmail.email);}
+DonEmailCopier.prototype.copyField=function(_srcComp,_destComp,_srcValue)
+{if(_destComp){var value=_srcComp?_srcComp.get():_srcValue;if(value)
+_destComp.set(value);}}
+function Phone(_phone)
+{this.phone=_phone;}
+function PhoneComponents(_phoneCompId)
+{this.phoneComp=get_observable_component(_phoneCompId);}
+function DonPhoneCopier(_srcPhone,_srcPhoneComps,_destPhoneComps)
+{this.srcPhone=_srcPhone;this.srcPhoneComponents=_srcPhoneComps;this.destPhoneComponents=_destPhoneComps;}
+DonPhoneCopier.prototype.observe=function(_event)
+{if(!_event.component||!filter_values_equal(_event.component.get(),true))return;this.copyField(this.srcPhoneComponents.phoneComp,this.destPhoneComponents.phoneComp,this.srcPhone.phone);}
+DonPhoneCopier.prototype.copyField=function(_srcComp,_destComp,_srcValue)
+{if(_destComp){var value=_srcComp?_srcComp.get():_srcValue;if(value)
+_destComp.set(value);}}

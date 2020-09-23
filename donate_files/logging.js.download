@@ -1,0 +1,4 @@
+/* Compressed by the perl version of jsmin. */
+/* JavaScript::Minifier 0.02 */
+
+cvLogger={isConsoleDefined:function(){return(typeof console!=="undefined");},log:function(msg,data){return this.isConsoleDefined()&&console.log&&console.log(msg,data||'');},debug:function(msg,data){return this.isConsoleDefined()&&console.debug&&console.debug(msg,data||'');},info:function(msg,data){return this.isConsoleDefined()&&console.info&&console.info(msg,data||'');},warn:function(msg,data){return this.isConsoleDefined()&&console.warn&&console.warn(msg,data||'');},error:function(msg,data){return this.isConsoleDefined()&&console.error&&console.error(msg,data||'');}};
