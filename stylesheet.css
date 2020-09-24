@@ -1,23 +1,71 @@
 h1 {
     text-align: center;
     font-size: 50px;
+    background: #05386b;
+    color: #edf5e1;
+    font-style: italic;
 }
 
 body {
-  background: #ebddca;
+  background: #5cdb95;
 }
 
 header {
-  background-color: #81689e;
+  background-color: transparent;
   font-family: Helvetica, Verdana, serif;
-  font-size: 60px;
-  height: 75px;
-  padding: 10px;
+  font-size: 32px;
+  height: 45px;
+  position: relative;
+}
+
+h2 {
+	font-size: 40px;
+	font-family: Avenir, sans-serif;
+	background-color: transparent;
+}
+
+p{
+	background: #8ee4af;
+	width: 400px;
+	font-family: Avenir, Helvetica, sans-serif;
+	padding: 5px;
+}
+
+h4{
+	background: #8ee4af;
+	font-family: Avenir, Helvetica, sans-serif;
+	padding: 5px;
+}
+
+.center{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
+.news{
+	float: right;
+}
+
+img.info{
+	float: right;
+}
+
+footer{
+	font-family: Avenir, Helvetica, sans-serif;
+
+}
+
+img.about{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 section {
-  background: #ebddca;
-  max-width: 800px;
+  background: #5cdb95;
+  min-width: 300px;
   padding: 5px;
 }
 
@@ -26,15 +74,19 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #709e7e;
+  background-color: #5cdb95;
   position: fixed;
   top: 0;
-  width:100%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%,0%);
 }
+
+
 
 li {
   float: left;
-  border-right: 1px solid #bbb;
+  border-right: 0px solid #bbb;
 }
 
 li:last-child {
@@ -43,12 +95,35 @@ li:last-child {
 
 li a {
   display: block;
-  color: white;
+  color: #05386b;
   text-align: center;
-  padding: 14px 16px;
+  padding: 4px 16px;
   text-decoration: none;
 }
 
 li a:hover {
-  background-color: #9bebb2;
+  background-color: #379683;
+}
+
+table, th, td {
+  border: 0px solid black;
+  font-family: Avenir, Helvetica, sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+
+th, td {
+  padding: 5px;
+  padding-right: 70px;
+  text-align: left;
+}
+
+tr:nth-child(even) {background-color: #8ee4af;}
+
+th {
+  background-color: #05386b;
+  color: white;
 }
